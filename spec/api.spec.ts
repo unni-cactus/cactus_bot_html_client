@@ -17,7 +17,7 @@
 import {ApiAiClient} from "../ts/ApiAiClient";
 describe("API", () => {
 
-    const client = new ApiAiClient({accessToken: "3485a96fb27744db83e78b8c4bc9e7b7"});
+    const client = new ApiAiClient({accessToken: "acfbff8e33d040c79b51b7f607322e8d"});
 
     describe("Text Query", () => {
         it ("should return response", function (done) {

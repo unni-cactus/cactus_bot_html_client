@@ -29,3 +29,8 @@ window.init = function(token) {
 function sendText(text) {
   return client.textRequest(text);
 }
+
+
+function sendEvent(eventName, eventData) {
+  return client.eventRequest(eventName, eventData);
+}

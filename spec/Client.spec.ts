@@ -17,7 +17,7 @@
 import {ApiAiClient} from "../ts/ApiAiClient";
 import {ApiAiConstants} from "../ts/ApiAiConstants";
 
-const ACCESS_TOKEN = "AT";
+const ACCESS_TOKEN = "acfbff8e33d040c79b51b7f607322e8d";
 const expect = chai.expect;
 
 describe("ApiAi.Client", () => {
