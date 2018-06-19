@@ -33,10 +33,9 @@
     //setAccessTokenButton.addEventListener("click", setAccessToken);
 
     //invoke welcome event
-      var eventName = 'WELCOME';
-      var eventData = {'name': 'Unni'};
-      sendEventRequest(eventName, eventData);
+    window.addEventListener('message', sendWelcomeMessage);
     //end of welcome event invoke
+
     track_hits();
     if( localStorage.message ) {
       var message = jQuery.parseJSON(localStorage.message)
@@ -74,10 +73,11 @@
     sendText(value)
       .then(function(response) {
         console.log(response);
-        var result; var carousel;
+        var result; var carousel;var payload;
         try {
           result = response.result.fulfillment.speech;
           carousel = response.result.fulfillment.messages.find(message => message.type === 'carousel_card');
+          payload = response.result.fulfillment.messages.find(message => message.type === 4);
         } catch(error) {
           result = "";
         }
@@ -87,6 +87,9 @@
         }
         if(carousel){
          setCarouselResponseOnNode(carousel, responseNode); 
+        }
+        if(payload){
+          setPayload(payload.payload);
         }
 
       })
@@ -247,4 +250,89 @@
    console.log("Total Hits :" + localStorage.hits );
   }
 
+  function setPayload(payload){
+    if(payload.file_upload){
+      showBrowseButton();  
+    } else if(payload.type=='date-picker'){
+      console.log('Show date picker');
+      var datepicker = '<form><div class = "row"><input type="text" class="datepicker"></div></form>';
+      $('#result').append(datepicker);
+      $('.datepicker').pickadate();
+    }
+  }
+
+  function showBrowseButton(random=''){
+    random = Math.floor(Math.random()*1000)+'_set_'+Math.floor(Math.random()*1000);
+    var formID = 'form_'+random;
+    var fileID = 'file_'+random;
+    var uploadID = 'upload_'+random;
+    var browse = '<form id="'+formID+'" onsubmit="'+"return showProgressBar('"+random+"')"+'" class = "col s12">'
+                    +'<div class = "row">'
+                        +'<div class = "file-field input-field">'
+                          +'<div class = "btn">'
+                             +'<span>Browse</span>'
+                             +'<input type = "file" />'
+                          +'</div>'
+                          +'<div class = "file-path-wrapper">'
+                             +'<input id="'+fileID+'" onchange="showUploadButton('+"'"+random+"'"+')" class = "file-path validate" type = "text"'
+                                +'placeholder = "Upload file" />'
+                          +'</div>'
+                        +'</div>'
+                      +'<button id="'+uploadID+'" style="display:none; float: right;" class = "btn waves-effect waves-light red right-align">'
+                      +'Upload'
+                      +'<i class = "material-icons right">arrow_upward</i></button>'
+                    +'</div>'
+                    +'</form>';
+    $('#result').append(browse);
+    $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+  }
+
+  function sendWelcomeMessage(e) {
+    console.log(e);
+      var emitedData = jQuery.parseJSON(e.data);
+      var eventName = 'WELCOME';
+      var eventData = {'name': emitedData.userName};
+      sendEventRequest(eventName, eventData);
+  }
+  
+  
 })();
+
+
+  function showProgressBar(formID){
+    var progress = '<div class = "row" id="progress_'+formID+'">'
+                      +'<div class = "progress">'
+                        +'<div class = "indeterminate"></div>'
+                      +'</div>'
+                    +'</div>';
+    $('#form_'+formID).append(progress);
+    $('#upload_'+formID).attr('disabled','disabled');
+    $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+    var eventName = 'UPLOAD';
+    var fileName  = $('#file_'+formID).val();
+    var eventData = {'file': fileName};
+    sendEventRequest(eventName, eventData, formID);
+    return false;
+  }
+
+  function showUploadButton(formID){
+    $('#upload_'+formID).show();
+  }
+
+  function hideProgressBar(formID,msg){
+    $('#progress_'+formID).fadeOut('slow');
+    $('#form_'+formID).append(msg);
+  }
+
+  function sendEventRequest(eventName, eventData, formID){
+      sendEvent(eventName, eventData).then(function(response){
+        console.log(response);
+        var result;
+        try {
+          result = response.result.fulfillment.speech
+        } catch(error) {
+          result = "";
+        }
+        hideProgressBar(formID,result);
+      });
+  }

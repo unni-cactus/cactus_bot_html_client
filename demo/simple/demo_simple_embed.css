@@ -1,0 +1,7 @@
+#bp-web-widget{
+	z-index: 999;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	width: 400px;
+}
