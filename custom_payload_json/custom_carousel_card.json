@@ -1,0 +1,56 @@
+{
+
+    "type":"custom_carousel_card",
+    "platform":"cactus_custom_client",
+    "items":[
+        {
+            "title":"Card Title",
+            "description":"Description",
+            "image":{
+                "url":"https://www.example.com/images.png",
+                "accessibilityText":"Alternate Text"
+            },
+            "optionInfo":[
+                {
+                    "key":"option_event",
+                    "value":"option_event_value",
+                    "title":"Option Name",
+                    "synonyms":[
+                    ]
+                },
+                {
+                    "key":"option_event-1",
+                    "value":"option_event_value-1",
+                    "title":"Option Name 1",
+                    "synonyms":[
+                    ]
+                }
+            ]
+        },
+        {
+            "title":"Card Title 1",
+            "description":"Description",
+            "image":{
+                "url":"https://www.example.com/images.png",
+                "accessibilityText":"Alternate Text"
+            },
+            "optionInfo":[
+                {
+                    "key":"option_event",
+                    "value":"option_event_value",
+                    "title":"Option Name",
+                    "synonyms":[
+                    ]
+                },
+                {
+                    "key":"option_event-1",
+                    "value":"option_event_value-1",
+                    "title":"Option Name 1",
+                    "synonyms":[
+                    ]
+                }
+            ]
+        }
+    ]
+
+}

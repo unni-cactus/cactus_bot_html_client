@@ -51,12 +51,13 @@
     <div class="container">
         <div class="row">
             <!-- <div class="col"> -->
-                <div class="input-field" style="position: fixed; bottom: 10px; width: 70%;">
-                    <input placeholder="Hey, ask me something..." id="q" type="text" >
-                </div>
                 <div id="result" style="position: relative; top: -60px; bottom: 80px;">
-                    <!--div class="left-align flow-text">test</div>
-                    <div class="right-align flow-text">one more test</div-->
+                    <!--
+                        <div class="left-align flow-text">test</div>
+                    -->
+                    <!--
+                        <div class="right-align flow-text">one more test</div>
+                    -->
                     <!-- 
                       <div class="carousel">
                         <div class="carousel-item">
@@ -105,15 +106,35 @@
                           </div>
                         </div>
                     -->
+
+                  <ul class="collection with-header">
+                    <li class="collection-header">Please select the payment method</li>
+                    <a href="#!" class="collection-item">Credi Card</a>
+                    <a href="#!" class="collection-item">Debit Card</a>
+                    <a href="#!" class="collection-item">Paypal</a>
+                    <a href="#!" class="collection-item">Direct Bank Transfer</a>
+                  </ul>
+            
                 </div>
-            <!-- </div> -->
-            <!-- <div class="col s2"></div>
-            <div class="col s5"> -->
-            <!--h5>Request payload:</h5>
-            <pre id="jsonRequest"></pre-->
-            <!-- <h5>Response payload:</h5>
-            <pre id="jsonResponse"></pre> -->
-            <!-- </div> -->
+        </div>
+        <div class="row" style="position: fixed; bottom: 40px;">
+            <a event="request-proforma-invoice">
+                <div class="chip">Cancel</div>
+            </a>
+            <a event="request-proforma-invoice">
+                <div class="chip">Yes</div>
+            </a>
+            <a event="request-proforma-invoice">
+                <div class="chip">No</div>
+            </a>
+            <a event="request-proforma-invoice">
+                <div class="chip">Back to Main Menu</div>
+            </a>
+        </div>
+        <div class="row">
+                <div class="input-field" style="position: fixed; bottom: 10px; width: 70%;">
+                    <input placeholder="Hey, ask me something..." id="q" type="text" >
+                </div>
         </div>
     </div>
 </div>

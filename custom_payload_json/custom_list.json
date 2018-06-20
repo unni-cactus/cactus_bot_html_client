@@ -1,0 +1,26 @@
+{
+    "type":"custom_list",
+    "platform":"cactus_custom_client",
+    "items":[
+        {
+            "title":"Choose your job code",
+            "description":"",
+            "optionInfo":[
+                {
+                    "key":"option_event",
+                    "value":"option_event_value",
+                    "title":"Option Name",
+                    "synonyms":[
+                    ]
+                },
+                {
+                    "key":"option_event-1",
+                    "value":"option_event_value-1",
+                    "title":"Option Name 1",
+                    "synonyms":[
+                    ]
+                }
+            ]
+        }
+    ]
+}

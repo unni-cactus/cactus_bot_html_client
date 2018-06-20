@@ -1,0 +1,22 @@
+{
+    "type":"custom_quick_reply",
+    "platform":"cactus_custom_client",
+    "items":[
+        {
+            "title":"Yes",
+            "description":"",
+            "key":"quick_event_name",
+            "value":"value_for_event"
+        },{
+            "title":"No",
+            "description":"",
+            "key":"quick_event_name",
+            "value":"value_for_event"
+        },{
+            "title":"Back to Menu",
+            "description":"",
+            "key":"quick_event_name",
+            "value":"value_for_event"
+        }
+    ]
+}
