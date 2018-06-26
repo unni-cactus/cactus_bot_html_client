@@ -1,24 +1,8 @@
-/**
- * Copyright 2017 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- 
 (function() {
   "use strict";
 
   var ENTER_KEY_CODE = 13;
-  var queryInput, resultDiv, accessTokenInput;
+  var queryInput, resultDiv, accessTokenInput, client_code;
 
   window.onload = init;
 
@@ -30,7 +14,6 @@
 
     queryInput.addEventListener("keydown", queryInputKeyDown);
     setAccessToken();
-    //setAccessTokenButton.addEventListener("click", setAccessToken);
 
     //invoke welcome event
     window.addEventListener('message', sendWelcomeMessage);
@@ -66,27 +49,21 @@
 
     var value = queryInput.value;
     queryInput.value = "";
-
     createQueryNode(value);
-    var responseNode = createResponseNode();
 
     sendText(value)
       .then(function(response) {
         console.log(response);
-        var result; var carousel;var payload;
+        var result; var payload;
         try {
           result = response.result.fulfillment.speech;
-          carousel = response.result.fulfillment.messages.find(message => message.type === 'carousel_card');
           payload = response.result.fulfillment.messages.find(message => message.type === 4);
         } catch(error) {
           result = "";
         }
-        //setResponseJSON(response);
         if(result){
+          var responseNode = createResponseNode();
           setResponseOnNode(result, responseNode);
-        }
-        if(carousel){
-         setCarouselResponseOnNode(carousel, responseNode); 
         }
         if(payload){
           setPayload(payload.payload);
@@ -94,18 +71,8 @@
 
       })
       .catch(function(err) {
-        //setResponseJSON(err);
-
-        setResponseOnNode("Something goes wrong", responseNode);
+        console.log("Something goes wrong on responseNode");
       });
-
-      //invoke even with all request
-      /*      
-        var eventName = 'main_menu';
-        var eventData = {'name': 'Cactus Global - Unni'};
-        sendEventRequest(eventName, eventData);
-      */
-      //end of event infocation
   }
 
   function createQueryNode(query) {
@@ -121,7 +88,7 @@
       message.push(history);
       localStorage.message = JSON.stringify(message);
     } else {
-      var messages =  new Array();
+      var messages = new Array;
       messages.push(history)
       localStorage.message = JSON.stringify(messages);
     }
@@ -147,15 +114,16 @@
       var message = jQuery.parseJSON(localStorage.message)
       message.push(history);
       localStorage.message = JSON.stringify(message);
-   } else {
-      var messages =  new Array();
+    } else {
+      var messages =  new Array;
       messages.push(history)
       localStorage.message = JSON.stringify(messages);
-   }
+    }
     $("html, body").animate({ scrollTop: $(document).height() }, 1000);
   }
 
-  function setCarouselResponseOnNode(carousel, responseNode){
+  function setCarouselResponseOnNode(carousel){
+    console.log('carousel');
     $('#result').append(carouselCardTemplate(carousel.items));
     $('.carousel').carousel();
     preventAClick();
@@ -172,17 +140,28 @@
   }
 
   function sendEventRequest(eventName, eventData){
+    if(eventName!='undefined'){
+      console.log('event trigger');
+      console.log(eventName,eventData);
       sendEvent(eventName, eventData).then(function(response){
         console.log(response);
         var result;
+        var result; var payload;
         try {
-          result = response.result.fulfillment.speech
+          result = response.result.fulfillment.speech;
+          payload = response.result.fulfillment.messages.find(message => message.type === 4);
         } catch(error) {
           result = "";
         }
-        var responseNode = createResponseNode();
-        setResponseOnNode(result, responseNode);
+        if(result){
+          var responseNode = createResponseNode();
+          setResponseOnNode(result, responseNode);
+        }
+        if(payload){
+          setPayload(payload.payload);
+        }
       });
+    }
   }
 
   function carouselCardTemplate(cards){
@@ -200,14 +179,14 @@
       template = template + '<div class="carousel-item">'
                             +'<img src="https://aliexpressagent.com/wp-content/uploads/2014/03/Payment-Information-768x679.jpg">'
                             +'<ul style="padding-left: 10px;">'
-                                +'<a href="#make-payment">'
+                                +'<a value="Make Payment" event="MAKE_PAYMENT">'
                                     +'<li>Make Payment</li>'
                                 +'</a>'
                                 +'<a href="#check-payment">'
                                     +'<li>Check Payment Status</li>'
                                 +'</a>'
                                 +'<a href="#editage-card">'
-                                    +'<li>Editage Cacrd</li>'
+                                    +'<li>Editage Card</li>'
                                 +'</a>'
                             +'</ul>'
                         +'</div>';
@@ -234,10 +213,23 @@
   }
   
   function preventAClick(){
-    $('a').click(function(){
+    $('#chatBox a').click(function(){
       var eventName = $(this).attr('event');
-      alert(eventName);
-      sendEventRequest(eventName)
+      var value = eventName;
+      var data;
+      if($(this).attr('value')){
+        data = {'data': $(this).attr('value')};
+        value = $(this).attr('value');
+      }
+      if(value){
+        createQueryNode(value);
+      }
+      if(eventName){
+        if(eventName == 'JOB_CODE_AFTER_BANK_PAYMENT'){
+          localStorage.job_code = value;
+        }
+        sendEventRequest(eventName,data);
+      }      
     });
   } 
 
@@ -251,21 +243,43 @@
   }
 
   function setPayload(payload){
-    if(payload.file_upload){
-      showBrowseButton();  
-    } else if(payload.type=='date-picker'){
-      console.log('Show date picker');
-      var datepicker = '<form><div class = "row"><input type="text" class="datepicker"></div></form>';
+    showQuickReply(payload.custom_quick_reply);
+    if(payload.type=='custom_carousel_card'){
+      setCarouselResponseOnNode(payload);
+    }
+    if(payload.type=='custom_list'){
+      showCustomList(payload);
+    }
+    if(payload.type=='custom_file_upload'){
+      showBrowseButton(payload.call_back);  
+    }
+    if(payload.type=='custom_date_picker'){
+      var uploadID  =1;
+      var datepicker = '<form><div class = "row"><input type="text" class="datepicker"></div>';
+      //datepicker = datepicker+'<button id="'+uploadID+'" style="float: right;" class = "btn waves-effect waves-light red right-align">'
+                      +'Sent selected date'
+                      +'</button>';
+      datepicker = datepicker+'</form>';
       $('#result').append(datepicker);
-      $('.datepicker').pickadate();
+      $('.datepicker').pickadate({
+        onClose: function( arg ){
+            if($('.datepicker').val()){
+              var data = {'data': $('.datepicker').val()};
+              localStorage.date = $('.datepicker').val();
+              sendEventRequest(payload.call_back,data);
+            }
+          }
+        });
     }
   }
 
-  function showBrowseButton(random=''){
-    random = Math.floor(Math.random()*1000)+'_set_'+Math.floor(Math.random()*1000);
+  function showBrowseButton(callBackEvent){
+    var random = Math.floor(Math.random()*1000)+'_set_'+Math.floor(Math.random()*1000);
+    random = callBackEvent;
     var formID = 'form_'+random;
     var fileID = 'file_'+random;
     var uploadID = 'upload_'+random;
+    $("#"+formID).remove();
     var browse = '<form id="'+formID+'" onsubmit="'+"return showProgressBar('"+random+"')"+'" class = "col s12">'
                     +'<div class = "row">'
                         +'<div class = "file-field input-field">'
@@ -287,15 +301,60 @@
     $("html, body").animate({ scrollTop: $(document).height() }, 1000);
   }
 
+  function showCustomList(lists_data){
+    var lists = '<ul class="collection with-header" style="height:auto; position: relative;float: right;top: 0px;">'
+                  +'<li class="collection-header">'+lists_data.items[0].title+'</li>';
+    $.each(lists_data.items[0].optionInfo,function(index,list){
+      list.value  = list.value.replace("HCTR", client_code);
+      list.key    = list.key.replace("HCTR", client_code);
+      list.title  = list.title.replace("HCTR", client_code);
+      lists = lists+'<a value="'+list.value+'" event="'+list.key+'" class="collection-item">'+list.title+'</a>';
+    });
+
+    lists = lists+'</ul>';
+    $('#result').append(lists);
+    preventAClick();
+    var height = $(document).height();
+    height = height+100;
+    $("html, body").animate({ scrollTop: height }, 1000);
+  }
+
+  function showQuickReply($replys){
+    var quick_reply = '';
+    $.each($replys, function( index, reply ) {
+      quick_reply = quick_reply+'<a event="'+reply.key+'" value="'+reply.value+'">'
+                        +'<div class="chip">'+reply.title+'</div>'
+                       +'</a>';
+    });
+    $('#quick_reply').html(quick_reply);
+  }
+
   function sendWelcomeMessage(e) {
-    console.log(e);
       var emitedData = jQuery.parseJSON(e.data);
-      var eventName = 'WELCOME';
-      var eventData = {'name': emitedData.userName};
-      sendEventRequest(eventName, eventData);
+      getDataFromEOS(emitedData.accessToken);
+  }
+
+  function getDataFromEOS(accessToken){
+      $.ajax({
+         url: "https://test42.api.cactusglobal.com/v1/client",
+         type: "GET",
+         beforeSend: function(xhr){
+                      xhr.setRequestHeader('Authorization', 'Bearer '+accessToken);
+                    },
+         success: function(response) { 
+              var client_details = jQuery.parseJSON(response);
+              var name = client_details.data.email_name+' ('+client_details.data.client_code+')';
+              var eventName = 'WELCOME';
+              var eventData = {'name': name};
+              client_code = client_details.data.client_code
+              sendEventRequest(eventName, eventData);
+              sendEventRequest('MAIN_MENU'); 
+            }
+      });
   }
   
   
+
 })();
 
 
@@ -308,10 +367,18 @@
     $('#form_'+formID).append(progress);
     $('#upload_'+formID).attr('disabled','disabled');
     $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-    var eventName = 'UPLOAD';
+    var eventName = formID;
     var fileName  = $('#file_'+formID).val();
-    var eventData = {'file': fileName};
-    sendEventRequest(eventName, eventData, formID);
+    var eventData = {'data': fileName};
+    localStorage.file_name = fileName;
+
+    console.log(localStorage.file_name);
+    console.log(localStorage.date);
+    console.log(localStorage.job_code);
+    //send email from here
+    var email = {'date': localStorage.date, 'job_code':localStorage.job_code, 'file_name':localStorage.file_name};
+    sendEventRequestPublic('SEND_EMAIL', email, 'send_email');
+    sendEventRequestPublic(eventName, eventData, formID);
     return false;
   }
 
@@ -324,7 +391,7 @@
     $('#form_'+formID).append(msg);
   }
 
-  function sendEventRequest(eventName, eventData, formID){
+  function sendEventRequestPublic(eventName, eventData="", formID=""){
       sendEvent(eventName, eventData).then(function(response){
         console.log(response);
         var result;
@@ -334,5 +401,28 @@
           result = "";
         }
         hideProgressBar(formID,result);
+      });
+  }
+
+  function sendEmailViaCRM(accessToken){
+    var email_data = {
+      action : 'email_from'
+    }; 
+      $.ajax({
+         url: "http://local.crm.cactusglobal.com/api/for-chat-bot/job-codes",
+         type: "POST",
+         data: {queryResult:email_data},
+         beforeSend: function(xhr){
+                      xhr.setRequestHeader('Authorization', 'Bearer '+accessToken);
+                    },
+         success: function(response) { 
+              var client_details = jQuery.parseJSON(response);
+              var name = client_details.data.email_name+' ('+client_details.data.client_code+')';
+              var eventName = 'WELCOME';
+              var eventData = {'name': name};
+              client_code = client_details.data.client_code
+              sendEventRequest(eventName, eventData);
+              sendEventRequest('MAIN_MENU'); 
+            }
       });
   }

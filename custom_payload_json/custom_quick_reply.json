@@ -1,7 +1,8 @@
 {
-    "type":"custom_quick_reply",
+    "type":"custom_empty",
     "platform":"cactus_custom_client",
-    "items":[
+    "items":[],
+    "custom_quick_reply":[
         {
             "title":"Yes",
             "description":"",

@@ -1,0 +1,7 @@
+{
+    "type":"custom_file_upload",
+    "platform":"cactus_custom_client",
+    "items":[],
+    "custom_quick_reply":[],
+    "call_back": "ASK_FOR_ADDITIONAL_COMMENTS"
+}

@@ -25,7 +25,7 @@ var init = function init(initData) {
   var iframeHTML = '<iframe '+height+width+' id=\'bp-widget\' frameborder=\'0\' src=\'' + iframeSrc + '\' />';
   injectDOMElement('div', 'body', { id: 'bp-web-widget', innerHTML: iframeHTML });
   var iframeWindow = document.querySelector('#bp-web-widget > #bp-widget').contentWindow;
-  console.log(initData.userName+' is username');
+  console.log(initData.accessToken+' is accessToken');
 };
 
 

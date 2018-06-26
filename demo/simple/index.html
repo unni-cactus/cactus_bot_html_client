@@ -23,120 +23,115 @@
             clear: both;
         }
         .container{
-            background-color: white;
+            background-color: #227257;
         }
     </style>
 </head>
 <body>
-<div class="container" >
-    <div class="row">
-        <h5><!-- Configure demo: --></h5>
-    </div>
-    <div class="row">
-        <div class="input-field col s10">
-            <input id="access_token" type="hidden" value="269997d82d3b4347a72e99dbaa142af0">
-            <label for="access_token"><!-- Access token --></label>
-        </div>
-        <div class="col s2 input-field">
-            <!-- 
-                <a class="waves-effect waves-light btn" id="set_access_token">Start</a>
-            -->
-        </div>
-    </div>
-</div>
-<div id="placeholder">
-    <!-- <h5>Please, fill access token before start</h5> -->
-</div>
-<div id="main-wrapper">
+<div id="chatBox" style="display: none">
+    <i class="material-icons" style="position: fixed; z-index: 999; top: 10px; left: 10px; cursor: pointer;" onclick="hideChatBox()">close</i>
     <div class="container">
         <div class="row">
-            <!-- <div class="col"> -->
-                <div id="result" style="position: relative; top: -60px; bottom: 80px;">
-                    <!--
-                        <div class="left-align flow-text">test</div>
-                    -->
-                    <!--
-                        <div class="right-align flow-text">one more test</div>
-                    -->
-                    <!-- 
-                      <div class="carousel">
-                        <div class="carousel-item">
-                            <img src="https://aliexpressagent.com/wp-content/uploads/2014/03/Payment-Information-768x679.jpg">
-                            <ul style="padding-left: 10px;">
-                                <a href="#make-payment">
-                                    <li>Make Payment</li>
-                                </a>
-                                <a href="#check-payment">
-                                    <li>Check Payment Status</li>
-                                </a>
-                                <a href="#editage-card">
-                                    <li>Editage Cacrd</li>
-                                </a>
-                            </ul>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="https://thumbs.dreamstime.com/b/receipt-icon-paper-invoice-total-bill-dollar-symbol-vector-illustration-flat-style-87311557.jpg">
-                            <ul style="padding-left: 10px;">
-                                <a href="#make-payment">
-                                    <li>Download Invoice/Recipt</li>
-                                </a>
-                                <a href="#make-payment">
-                                    <li>Download Invoice/Recipt</li>
-                                </a>
-                                <a href="#make-payment">
-                                    <li>Request for Proforma Invoice</li>
-                                </a>
-                                <a href="#make-payment">
-                                    <li>Unable to Download/Edit Invoice</li>
-                                </a>
-                            </ul>
-                        </div>
-                      </div>
-                    -->
-                    <!--
-                        <div class = "file-field input-field">
-                          <div class = "btn">
-                             <span>Browse</span>
-                             <input type = "file" />
-                          </div>
-                          
-                          <div class = "file-path-wrapper">
-                             <input class = "file-path validate" type = "text"
-                                placeholder = "Upload file" />
-                          </div>
-                        </div>
-                    -->
-
-                  <ul class="collection with-header">
-                    <li class="collection-header">Please select the payment method</li>
-                    <a href="#!" class="collection-item">Credi Card</a>
-                    <a href="#!" class="collection-item">Debit Card</a>
-                    <a href="#!" class="collection-item">Paypal</a>
-                    <a href="#!" class="collection-item">Direct Bank Transfer</a>
-                  </ul>
-            
-                </div>
-        </div>
-        <div class="row" style="position: fixed; bottom: 40px;">
-            <a event="request-proforma-invoice">
-                <div class="chip">Cancel</div>
-            </a>
-            <a event="request-proforma-invoice">
-                <div class="chip">Yes</div>
-            </a>
-            <a event="request-proforma-invoice">
-                <div class="chip">No</div>
-            </a>
-            <a event="request-proforma-invoice">
-                <div class="chip">Back to Main Menu</div>
-            </a>
+            <h5><!-- Configure demo: --></h5>
         </div>
         <div class="row">
-                <div class="input-field" style="position: fixed; bottom: 10px; width: 70%;">
-                    <input placeholder="Hey, ask me something..." id="q" type="text" >
-                </div>
+            <div class="input-field col s10">
+                <input id="access_token" type="hidden" value="7170bde512d843f4951eae50693b6011">
+                <label for="access_token"><!-- Access token --></label>
+            </div>
+            <div class="col s2 input-field">
+                <!-- 
+                    <a class="waves-effect waves-light btn" id="set_access_token">Start</a>
+                -->
+            </div>
         </div>
     </div>
+    <div id="placeholder">
+        <!-- <h5>Please, fill access token before start</h5> -->
+    </div>
+    <div id="main-wrapper">
+        <div class="container">
+            <div class="row">
+                <!-- <div class="col"> -->
+                    <div id="result" style="position: relative; top: -60px; bottom: 80px;">
+                        <!--
+                            <div class="left-align flow-text">test</div>
+                        -->
+                        <!--
+                            <div class="right-align flow-text">one more test</div>
+                        -->
+                        <!-- 
+                          <div class="carousel">
+                            <div class="carousel-item">
+                                <img src="https://aliexpressagent.com/wp-content/uploads/2014/03/Payment-Information-768x679.jpg">
+                                <ul style="padding-left: 10px;">
+                                    <a href="#make-payment">
+                                        <li>Make Payment</li>
+                                    </a>
+                                    <a href="#check-payment">
+                                        <li>Check Payment Status</li>
+                                    </a>
+                                    <a href="#editage-card">
+                                        <li>Editage Cacrd</li>
+                                    </a>
+                                </ul>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://thumbs.dreamstime.com/b/receipt-icon-paper-invoice-total-bill-dollar-symbol-vector-illustration-flat-style-87311557.jpg">
+                                <ul style="padding-left: 10px;">
+                                    <a href="#make-payment">
+                                        <li>Download Invoice/Recipt</li>
+                                    </a>
+                                    <a href="#make-payment">
+                                        <li>Download Invoice/Recipt</li>
+                                    </a>
+                                    <a href="#make-payment">
+                                        <li>Request for Proforma Invoice</li>
+                                    </a>
+                                    <a href="#make-payment">
+                                        <li>Unable to Download/Edit Invoice</li>
+                                    </a>
+                                </ul>
+                            </div>
+                          </div>
+                        -->
+                        <!--
+                            <div class = "file-field input-field">
+                              <div class = "btn">
+                                 <span>Browse</span>
+                                 <input type = "file" />
+                              </div>
+                              
+                              <div class = "file-path-wrapper">
+                                 <input class = "file-path validate" type = "text"
+                                    placeholder = "Upload file" />
+                              </div>
+                            </div>
+                        -->
+                        <!-- 
+                            <ul class="collection with-header">
+                                <li class="collection-header">Please select the payment method</li>
+                                <a href="#!" class="collection-item">Credi Card</a>
+                                <a href="#!" class="collection-item">Debit Card</a>
+                                <a href="#!" class="collection-item">Paypal</a>
+                                <a href="#!" class="collection-item">Direct Bank Transfer</a>
+                            </ul>
+                        -->
+                
+                    </div>
+            </div>
+            <div class="row" id="quick_reply" style="position: fixed; bottom: 40px;">
+            </div>
+            <div class="row">
+                    <div class="input-field" style="position: fixed; bottom: 10px; width: 70%;">
+                        <input placeholder="Hey, ask me something..." id="q" type="text" >
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="showChatBox">
+    <a onclick="showChatBox()" style="position: fixed; z-index: 999; bottom: 50px; right: 50px;" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">chat</i></a>
 </div>
 <script defer src="layout.js"></script>
 <style type="text/css">
@@ -153,5 +148,17 @@
     }
 
 </style>
+<script>
+    function hideChatBox(){
+        $('#chatBox').hide();
+        $('body').css('background','');
+        $('#showChatBox').show();
+    }
+    function showChatBox(){
+        $('#chatBox').show();
+        $('body').css('background','#227257');
+        $('#showChatBox').hide();   
+    }
+</script>
 </body>
 </html>
